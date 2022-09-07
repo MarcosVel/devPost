@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "733899847844",
+    "project_id": "devpost-cc1ac",
+    "storage_bucket": "devpost-cc1ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:733899847844:android:b4bd5e2a556692b6f28e31",
+        "android_client_info": {
+          "package_name": "com.devpost"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "733899847844-l6gt2mf42dkfc490lrnp2bbr52930n3j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4FPch3gPYt9ERYKNjNuIJVho9TGn1tUk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "733899847844-l6gt2mf42dkfc490lrnp2bbr52930n3j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
