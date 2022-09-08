@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import Login from '../pages/Login';
+import Auth from '../pages/Auth';
 
 const Stack = createNativeStackNavigator();
 
@@ -8,9 +8,9 @@ function AuthRoutes() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{ headerShow: false }}
+        name="Auth"
+        component={Auth}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
