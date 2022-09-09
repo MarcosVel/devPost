@@ -12,7 +12,7 @@ import {
 } from './styles';
 
 function Auth() {
-  const { signUp } = useContext(AuthContext);
+  const { signUp, signIn } = useContext(AuthContext);
   const [login, setLogin] = useState(true);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -25,11 +25,13 @@ function Auth() {
     setLogin(!login);
   }
 
-  function handleSignIn() {
+  async function handleSignIn() {
     if (email === '' || password === '') {
       alert('Please complete all required fields');
       return;
     }
+
+    await signIn(email, password);
   }
 
   async function handleSignUp() {

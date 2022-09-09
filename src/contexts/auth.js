@@ -34,8 +34,33 @@ function AuthProvider({ children }) {
       });
   }
 
+  async function signIn(email, password) {
+    await auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(async value => {
+        let uid = value.user.uid;
+
+        const userProfile = await firestore()
+          .collection('users')
+          .doc(uid)
+          .get();
+
+        // console.log(userProfile.data().name);
+        let data = {
+          uid: uid,
+          name: userProfile.data().name,
+          email: value.user.email,
+        };
+
+        setUser(data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
   return (
-    <AuthContext.Provider value={{ signed: !!user, signUp }}>
+    <AuthContext.Provider value={{ signed: !!user, signUp, signIn }}>
       {children}
     </AuthContext.Provider>
   );
