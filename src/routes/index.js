@@ -5,8 +5,7 @@ import AppRoutes from './app.routes';
 import AuthRoutes from './auth.routes';
 
 function Routes() {
-  const { signed } = useContext(AuthContext);
-  const loading = false;
+  const { signed, loading } = useContext(AuthContext);
 
   return loading ? (
     <View
