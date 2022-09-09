@@ -6,8 +6,11 @@ export const AuthContext = createContext({});
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [loadingAuth, setLoadingAuth] = useState(false);
 
   async function signUp(name, email, password) {
+    setLoadingAuth(true);
+
     await auth()
       .createUserWithEmailAndPassword(email, password)
       .then(async value => {
@@ -32,9 +35,13 @@ function AuthProvider({ children }) {
       .catch(error => {
         console.log(error);
       });
+
+    setLoadingAuth(false);
   }
 
   async function signIn(email, password) {
+    setLoadingAuth(true);
+
     await auth()
       .signInWithEmailAndPassword(email, password)
       .then(async value => {
@@ -57,10 +64,13 @@ function AuthProvider({ children }) {
       .catch(error => {
         console.log(error);
       });
+
+    setLoadingAuth(false);
   }
 
   return (
-    <AuthContext.Provider value={{ signed: !!user, signUp, signIn }}>
+    <AuthContext.Provider
+      value={{ signed: !!user, signUp, signIn, loadingAuth }}>
       {children}
     </AuthContext.Provider>
   );
