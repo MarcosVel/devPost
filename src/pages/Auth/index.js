@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { AuthContext } from '../../contexts/auth';
 import {
   Button,
   ButtonText,
@@ -11,6 +12,7 @@ import {
 } from './styles';
 
 function Auth() {
+  const { signUp } = useContext(AuthContext);
   const [login, setLogin] = useState(true);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -30,11 +32,13 @@ function Auth() {
     }
   }
 
-  function handleSignUp() {
+  async function handleSignUp() {
     if (name === '' || email === '' || password === '') {
       alert('Please complete all required fields');
       return;
     }
+
+    await signUp(name, email, password);
   }
 
   return login ? (
