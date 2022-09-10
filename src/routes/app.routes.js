@@ -1,12 +1,49 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import Feather from 'react-native-vector-icons/Feather';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Home from '../pages/Home';
 import Profile from '../pages/Profile';
 import Search from '../pages/Search';
+import NewPost from '../pages/NewPost';
+import PostsUser from '../pages/PostsUser';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+function StackRoutes() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="NewPost"
+        component={NewPost}
+        options={{
+          title: 'Novo Post',
+          headerTintColor: '#fff',
+          headerStyle: {
+            backgroundColor: '#36393f',
+          },
+        }}
+      />
+      <Stack.Screen
+        name="PostsUser"
+        component={PostsUser}
+        options={{
+          headerTintColor: '#fff',
+          headerStyle: { backgroundColor: '#36393f' },
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
 
 function AppRoutes() {
   return (
@@ -22,8 +59,8 @@ function AppRoutes() {
         },
       }}>
       <Tab.Screen
-        name="Home"
-        component={Home}
+        name="HomeTab"
+        component={StackRoutes}
         options={{
           tabBarIcon: ({ color, size }) => {
             return <Feather name="home" color={color} size={size} />;
