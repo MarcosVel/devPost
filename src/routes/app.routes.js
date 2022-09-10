@@ -1,13 +1,13 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import Feather from 'react-native-vector-icons/Feather';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Home from '../pages/Home';
-import Profile from '../pages/Profile';
-import Search from '../pages/Search';
 import NewPost from '../pages/NewPost';
 import PostsUser from '../pages/PostsUser';
+import Profile from '../pages/Profile';
+import Search from '../pages/Search';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -29,7 +29,7 @@ function StackRoutes() {
           title: 'Novo Post',
           headerTintColor: '#fff',
           headerStyle: {
-            backgroundColor: '#36393f',
+            backgroundColor: '#202225',
           },
         }}
       />
@@ -38,7 +38,7 @@ function StackRoutes() {
         component={PostsUser}
         options={{
           headerTintColor: '#fff',
-          headerStyle: { backgroundColor: '#36393f' },
+          headerStyle: { backgroundColor: '#202225' },
         }}
       />
     </Stack.Navigator>
