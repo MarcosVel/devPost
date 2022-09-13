@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 
 export const Container = styled.SafeAreaView`
   flex: 1;
@@ -27,6 +27,12 @@ export const Button = styled.TouchableOpacity.attrs({
   padding: 8px 24px;
   background-color: #fff;
   border-radius: 30px;
+
+  ${props =>
+    props.disabled &&
+    css`
+      opacity: 0.5;
+    `}
 `;
 
 export const ButtonText = styled.Text`
