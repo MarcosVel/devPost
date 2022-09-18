@@ -15,39 +15,50 @@ function Home() {
   const { user } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingRefresh, setLoadingRefresh] = useState(false);
+  const [lastItem, setLastItem] = useState('');
+  const [emptyList, setEmptyList] = useState(false);
+
+  const fetchPosts = useCallback(() => {
+    firestore()
+      .collection('posts')
+      .orderBy('created', 'desc')
+      .limit(5)
+      .get()
+      .then(snapshot => {
+        setPosts([]);
+        const postList = [];
+
+        snapshot.docs.map(doc => {
+          postList.push({ ...doc.data(), id: doc.id });
+        });
+
+        setEmptyList(snapshot.empty);
+        setPosts(postList);
+        setLastItem(snapshot.docs[snapshot.docs.length - 1]);
+        setLoading(false);
+      });
+  }, []);
 
   useFocusEffect(
     useCallback(() => {
       let isActive = true;
 
-      function fetchPosts() {
-        firestore()
-          .collection('posts')
-          .orderBy('created', 'desc')
-          .limit(5)
-          .get()
-          .then(snapshot => {
-            if (isActive) {
-              setPosts([]);
-              const postList = [];
-
-              snapshot.docs.map(doc => {
-                postList.push({ ...doc.data(), id: doc.id });
-              });
-
-              setPosts(postList);
-              setLoading(false);
-            }
-          });
+      if (isActive) {
+        fetchPosts();
       }
-
-      fetchPosts();
 
       return () => {
         isActive = false;
       };
     }, []),
   );
+
+  async function handleRefreshPosts() {
+    setLoadingRefresh(true);
+    fetchPosts();
+    setLoadingRefresh(false);
+  }
 
   return (
     <Container>
@@ -57,6 +68,8 @@ function Home() {
         <Loading />
       ) : (
         <ListPosts
+          refreshing={loadingRefresh}
+          onRefresh={handleRefreshPosts}
           data={posts}
           renderItem={({ item }) => <Post data={item} userId={user.uid} />}
         />
