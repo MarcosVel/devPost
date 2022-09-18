@@ -16,7 +16,6 @@ import { ptBR } from 'date-fns/locale';
 
 export default function Post({ data, userId }) {
   const [likePost, setLikePost] = useState(data?.likes);
-  console.log(data);
 
   function formatTimePost() {
     // console.log(new Date(data.created.seconds * 1000));

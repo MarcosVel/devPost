@@ -7,6 +7,7 @@ export const Container = styled.SafeAreaView`
   justify-content: center;
   border-bottom-width: 1px;
   border-bottom-color: #c7c7c7;
+  z-index: 1;
 `;
 
 export const Title = styled.Text`
