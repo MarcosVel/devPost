@@ -22,4 +22,5 @@ export const ButtonPost = styled.TouchableOpacity.attrs({
 
 export const ListPosts = styled.FlatList`
   flex: 1;
+  padding-top: 8px;
 `;

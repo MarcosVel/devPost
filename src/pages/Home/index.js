@@ -1,13 +1,14 @@
+import firestore from '@react-native-firebase/firestore';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useContext, useState } from 'react';
 
-import { ActivityIndicator, Text } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import Header from '../../components/Header';
-import { AuthContext } from '../../contexts/auth';
-import firestore from '@react-native-firebase/firestore';
-import { ButtonPost, Container, ListPosts } from './styles';
 import Loading from '../../components/Loading';
+import Post from '../../components/Post';
+
+import { AuthContext } from '../../contexts/auth';
+import { ButtonPost, Container, ListPosts } from './styles';
 
 function Home() {
   const navigation = useNavigation();
@@ -55,7 +56,10 @@ function Home() {
       {loading ? (
         <Loading />
       ) : (
-        <ListPosts data={posts} renderItem={({ item }) => <Text>teste</Text>} />
+        <ListPosts
+          data={posts}
+          renderItem={({ item }) => <Post data={item} userId={user.uid} />}
+        />
       )}
 
       <ButtonPost onPress={() => navigation.navigate('NewPost')}>
