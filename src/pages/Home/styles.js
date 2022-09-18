@@ -19,3 +19,11 @@ export const ButtonPost = styled.TouchableOpacity.attrs({
   justify-content: center;
   z-index: 99;
 `;
+
+export const ListPosts = styled.FlatList.attrs({
+  showsVerticalScrollIndicator: false,
+  contentContainerStyle: { paddingBottom: 24 },
+})`
+  flex: 1;
+  padding-top: 8px;
+`;
