@@ -1,27 +1,85 @@
-import React, { useState } from 'react';
+import firestore from '@react-native-firebase/firestore';
+import { formatDistance } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import React, { useCallback, useEffect, useState } from 'react';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {
+  Actions,
   Avatar,
   Container,
   Content,
-  Actions,
   Header,
-  Name,
-  LikeButton,
   Like,
+  LikeButton,
+  Name,
   TimePost,
 } from './styles';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { formatDistance } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 
 export default function Post({ data, userId }) {
   const [likePost, setLikePost] = useState(data?.likes);
+  const [userLiked, setUserLiked] = useState(false);
 
   function formatTimePost() {
-    // console.log(new Date(data.created.seconds * 1000));
     const datePost = new Date(data.created.seconds * 1000);
 
     return formatDistance(new Date(), datePost, { locale: ptBR });
+  }
+
+  useEffect(() => {
+    checkUserLiked();
+  }, []);
+
+  const docId = `${userId}_${data.id}`;
+
+  const checkUserLiked = useCallback(async () => {
+    // check post has been liked
+    const doc = await firestore().collection('likes').doc(docId).get();
+
+    if (doc.exists) {
+      setUserLiked(true);
+    }
+  }, []);
+
+  async function handleLikePost(id, likes) {
+    // remove like if post's already liked
+    if (userLiked) {
+      /// update firestore (db)
+      await firestore()
+        .collection('posts')
+        .doc(id)
+        .update({
+          likes: likes - 1,
+        });
+
+      // update state in aplication (screen)
+      await firestore()
+        .collection('likes')
+        .doc(docId)
+        .delete()
+        .then(() => {
+          setUserLiked(false);
+          setLikePost(likes - 1);
+        });
+
+      return;
+    }
+
+    // create likes collection in firestore
+    await firestore().collection('likes').doc(docId).set({
+      postId: id,
+      userId: userId,
+    });
+
+    await firestore()
+      .collection('posts')
+      .doc(id)
+      .update({
+        likes: likes + 1,
+      })
+      .then(() => {
+        setUserLiked(true);
+        setLikePost(likes + 1);
+      });
   }
 
   return (
@@ -38,9 +96,13 @@ export default function Post({ data, userId }) {
       <Content>{data?.content}</Content>
 
       <Actions>
-        <LikeButton>
-          <FontAwesome name="thumbs-o-up" color="#fff" size={20} />
-          {likePost !== 0 && <Like>12</Like>}
+        <LikeButton onPress={() => handleLikePost(data.id, likePost)}>
+          <FontAwesome
+            name={userLiked ? 'thumbs-up' : 'thumbs-o-up'}
+            color="#fff"
+            size={20}
+          />
+          {likePost !== 0 && <Like>{likePost}</Like>}
         </LikeButton>
 
         <TimePost>há {formatTimePost()}</TimePost>
