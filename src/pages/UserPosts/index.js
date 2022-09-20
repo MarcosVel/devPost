@@ -1,13 +1,22 @@
+import firestore from '@react-native-firebase/firestore';
 import {
   useFocusEffect,
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
-import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { Text, View } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
+import React, {
+  useCallback,
+  useContext,
+  useLayoutEffect,
+  useState,
+} from 'react';
+import Loading from '../../components/Loading';
+import Post from '../../components/Post';
+import { AuthContext } from '../../contexts/auth';
+import { Container, ListPosts } from './styles';
 
 function UserPosts() {
+  const { user } = useContext(AuthContext);
   const route = useRoute();
   const navigation = useNavigation();
   const userName = route.params.title;
@@ -38,7 +47,6 @@ function UserPosts() {
 
           if (isActive) {
             setPosts(postList);
-            console.log(postList);
             setLoading(false);
           }
         });
@@ -50,9 +58,16 @@ function UserPosts() {
   );
 
   return (
-    <View>
-      <Text>UserPosts</Text>
-    </View>
+    <Container>
+      {loading ? (
+        <Loading />
+      ) : (
+        <ListPosts
+          data={posts}
+          renderItem={({ item }) => <Post data={item} userId={user.uid} />}
+        />
+      )}
+    </Container>
   );
 }
 
