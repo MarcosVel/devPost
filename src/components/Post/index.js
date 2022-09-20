@@ -88,7 +88,7 @@ export default function Post({ data, userId }) {
     <Container>
       <Header
         onPress={() =>
-          navigation.navigate('PostsUser', {
+          navigation.navigate('UserPosts', {
             title: data.autor,
             userId: data.userId,
           })

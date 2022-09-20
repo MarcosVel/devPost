@@ -5,7 +5,7 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import Home from '../pages/Home';
 import NewPost from '../pages/NewPost';
-import PostsUser from '../pages/PostsUser';
+import UserPosts from '../pages/UserPosts';
 import Profile from '../pages/Profile';
 import Search from '../pages/Search';
 
@@ -34,8 +34,8 @@ function StackRoutes() {
         }}
       />
       <Stack.Screen
-        name="PostsUser"
-        component={PostsUser}
+        name="UserPosts"
+        component={UserPosts}
         options={{
           headerTintColor: '#fff',
           headerStyle: { backgroundColor: '#202225' },

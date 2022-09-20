@@ -2,7 +2,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useLayoutEffect } from 'react';
 import { Text, View } from 'react-native';
 
-function PostsUser() {
+function UserPosts() {
   const route = useRoute();
   const navigation = useNavigation();
   const userName = route.params.title;
@@ -15,9 +15,9 @@ function PostsUser() {
 
   return (
     <View>
-      <Text>PostsUser</Text>
+      <Text>UserPosts</Text>
     </View>
   );
 }
 
-export default PostsUser;
+export default UserPosts;
