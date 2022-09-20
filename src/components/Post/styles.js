@@ -10,7 +10,6 @@ export const Container = styled.View`
 `;
 
 export const Header = styled.TouchableOpacity`
-  width: 100%;
   flex-direction: row;
   align-items: center;
   margin-bottom: 8px;
