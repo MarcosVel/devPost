@@ -1,4 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
+import { useNavigation } from '@react-navigation/native';
 import { formatDistance } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -18,6 +19,7 @@ import {
 export default function Post({ data, userId }) {
   const [likePost, setLikePost] = useState(data?.likes);
   const [userLiked, setUserLiked] = useState(false);
+  const navigation = useNavigation();
 
   function formatTimePost() {
     const datePost = new Date(data.created.seconds * 1000);
@@ -84,7 +86,13 @@ export default function Post({ data, userId }) {
 
   return (
     <Container>
-      <Header>
+      <Header
+        onPress={() =>
+          navigation.navigate('UserPosts', {
+            title: data.autor,
+            userId: data.userId,
+          })
+        }>
         {data.avatarUrl ? (
           <Avatar source={{ uri: data.avatarUrl }} />
         ) : (
