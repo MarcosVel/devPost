@@ -3,6 +3,7 @@ import { Keyboard, TouchableWithoutFeedback } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import { Container, Input, InputArea, List } from './styles';
 import firestore from '@react-native-firebase/firestore';
+import SearchList from '../../components/SearchList';
 
 const Search = () => {
   const [input, setInput] = useState('');
@@ -16,8 +17,11 @@ const Search = () => {
 
     const subscriber = firestore()
       .collection('users')
-      .where('name', '>=', input)
-      .where('name', '<=', input + '\uf8ff')
+      // .where('name', '>=', input)
+      // .where('name', '<=', input + '\uf8ff')
+      .orderBy('name', 'asc')
+      .startAt(input.toUpperCase())
+      .endAt(input.toLowerCase() + '\uf8ff')
       .onSnapshot(snapshot => {
         const listUsers = [];
 
@@ -45,7 +49,10 @@ const Search = () => {
             onChangeText={text => setInput(text)}
           />
         </InputArea>
-        <List />
+        <List
+          data={users}
+          renderItem={({ item }) => <SearchList data={item} />}
+        />
       </Container>
     </TouchableWithoutFeedback>
   );
