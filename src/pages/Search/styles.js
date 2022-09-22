@@ -11,14 +11,14 @@ export const InputArea = styled.View`
   align-items: center;
   background-color: #262626;
   padding: 0 16px;
-  border-radius: 8;
+  border-radius: 8px;
 `;
 
 export const Input = styled.TextInput.attrs({
   placeholderTextColor: '#aaa',
 })`
   flex: 1;
-  margin-left: 8;
+  margin-left: 8px;
   color: #fff;
   font-size: 16px;
 `;
