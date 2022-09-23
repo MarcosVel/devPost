@@ -25,6 +25,6 @@ export const Red = styled(Title)`
 
 export const Logout = styled.TouchableOpacity`
   position: absolute;
-  right: 20;
-  bottom: 24;
+  right: 20px;
+  bottom: 24px;
 `;

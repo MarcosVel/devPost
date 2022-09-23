@@ -1,15 +1,41 @@
-import React, { useContext } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import React, { useContext, useState } from 'react';
+import Header from '../../components/Header';
 import { AuthContext } from '../../contexts/auth';
+import {
+  Avatar,
+  Button,
+  ButtonText,
+  Container,
+  Email,
+  Name,
+  UploadButton,
+} from './styles';
 
 const Profile = () => {
-  const { signOut } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+  const [url, setUrl] = useState(null);
+
   return (
-    <View>
-      <TouchableOpacity onPress={() => signOut()}>
-        <Text>Sair</Text>
-      </TouchableOpacity>
-    </View>
+    <Container>
+      <Header hasLogOut={true} />
+
+      {url ? (
+        <UploadButton activeOpacity={0.6}>
+          <Avatar source={{ uri: url }} />
+        </UploadButton>
+      ) : (
+        <UploadButton activeOpacity={0.6}>
+          <Avatar source={require('../../assets/avatar.png')} />
+        </UploadButton>
+      )}
+
+      <Name>{user.name}</Name>
+      <Email>{user.email}</Email>
+
+      <Button activeOpacity={0.6}>
+        <ButtonText>Atualizar perfil</ButtonText>
+      </Button>
+    </Container>
   );
 };
 
