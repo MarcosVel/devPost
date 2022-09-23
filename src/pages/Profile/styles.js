@@ -50,3 +50,49 @@ export const ButtonText = styled.Text`
   font-size: 16px;
   color: #fafafa;
 `;
+
+export const Background = styled.View`
+  flex: 1;
+  background-color: rgba(0, 0, 0, 0.7);
+`;
+
+export const ModalContainer = styled.KeyboardAvoidingView`
+  width: 100%;
+  height: 50%;
+  background-color: #202225;
+  position: absolute;
+  bottom: 0;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  padding: 32px;
+`;
+
+export const Input = styled.TextInput.attrs({
+  placeholderTextColor: '#aaa',
+})`
+  width: 100%;
+  background-color: #101012;
+  border-radius: 8px;
+  padding: 8px 16px;
+  color: #fafafa;
+  font-size: 16px;
+`;
+
+export const SaveButton = styled.TouchableOpacity`
+  margin-top: 24px;
+  width: 100%;
+  border-radius: 8px;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+  border-width: 1px;
+  border-color: #fafafa;
+`;
+
+export const SaveText = styled.Text`
+  font-size: 16px;
+  font-weight: bold;
+  color: #fafafa;
+`;
