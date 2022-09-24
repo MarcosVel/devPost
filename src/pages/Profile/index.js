@@ -1,5 +1,12 @@
+import firestore from '@react-native-firebase/firestore';
 import React, { useContext, useState } from 'react';
-import { Modal, Platform } from 'react-native';
+import {
+  ActivityIndicator,
+  Keyboard,
+  Modal,
+  Platform,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import Header from '../../components/Header';
 import { AuthContext } from '../../contexts/auth';
 import {
@@ -18,13 +25,44 @@ import {
 } from './styles';
 
 const Profile = () => {
-  const { user } = useContext(AuthContext);
+  const { user, setUser, storageUser } = useContext(AuthContext);
   const [url, setUrl] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [name, setName] = useState(user.name);
+  const [loadingUpdate, setLoadingUpdate] = useState(false);
 
-  function updateUsername() {
-    console.log('teste');
+  async function updateUsername() {
+    setLoadingUpdate(true);
+
+    if (name === '') {
+      return;
+    }
+
+    await firestore().collection('users').doc(user.uid).update({
+      name: name,
+    });
+
+    const postsDocs = await firestore()
+      .collection('posts')
+      .where('userId', '==', user.uid)
+      .get();
+
+    postsDocs.forEach(async doc => {
+      await firestore().collection('posts').doc(doc.id).update({
+        autor: name,
+      });
+    });
+
+    let data = {
+      uid: user.uid,
+      name: name,
+      email: user.email,
+    };
+
+    setUser(data);
+    storageUser(data);
+    setLoadingUpdate(false);
+    setModalVisible(false);
   }
 
   return (
@@ -56,18 +94,26 @@ const Profile = () => {
         transparent={true}
         onRequestClose={() => setModalVisible(false)}
         hardwareAccelerated={true}>
-        <Background>
-          <ModalContainer behavior={Platform.OS === 'ios' && 'padding'}>
-            <Input
-              placeholder={user.name}
-              value={name}
-              onChangeText={text => setName(text)}
-            />
-            <SaveButton activeOpacity={0.6} onPress={updateUsername}>
-              <SaveText>Salvar</SaveText>
-            </SaveButton>
-          </ModalContainer>
-        </Background>
+        <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+          <Background>
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+              <ModalContainer behavior={Platform.OS === 'ios' && 'padding'}>
+                <Input
+                  placeholder={user.name}
+                  value={name}
+                  onChangeText={text => setName(text)}
+                />
+                <SaveButton activeOpacity={0.6} onPress={updateUsername}>
+                  {loadingUpdate ? (
+                    <ActivityIndicator size={22} color="#fff" />
+                  ) : (
+                    <SaveText>Salvar</SaveText>
+                  )}
+                </SaveButton>
+              </ModalContainer>
+            </TouchableWithoutFeedback>
+          </Background>
+        </TouchableWithoutFeedback>
       </Modal>
     </>
   );
