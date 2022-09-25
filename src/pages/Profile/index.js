@@ -1,4 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
 import React, { useContext, useState } from 'react';
 import {
   ActivityIndicator,
@@ -7,6 +8,7 @@ import {
   Platform,
   TouchableWithoutFeedback,
 } from 'react-native';
+import { launchImageLibrary } from 'react-native-image-picker';
 import Header from '../../components/Header';
 import { AuthContext } from '../../contexts/auth';
 import {
@@ -65,17 +67,73 @@ const Profile = () => {
     setModalVisible(false);
   }
 
+  function uploadAvatar() {
+    const options = {
+      noData: true,
+      mediaType: 'photo',
+    };
+
+    launchImageLibrary(options, response => {
+      if (response.didCancel) {
+        console.log('fechou');
+      } else if (response.error) {
+        console.log('Error', response.errorMessage);
+      } else {
+        uploadFile(response).then(() => {
+          uploadAvatarPosts();
+        });
+        setUrl(response.assets[0].uri);
+      }
+    });
+  }
+
+  function getFilePath(response) {
+    // extract and return photo url
+    return response.assets[0].uri;
+  }
+
+  async function uploadFile(response) {
+    const fileSource = getFilePath(response);
+
+    const storageRef = storage().ref('users').child(user.uid);
+
+    return await storageRef.putFile(fileSource);
+  }
+
+  async function uploadAvatarPosts() {
+    const storageRef = storage().ref('users').child(user.uid);
+
+    const url = await storageRef
+      .getDownloadURL()
+      .then(async image => {
+        // aupdate all img from user in posts
+        const postDocs = await firestore()
+          .collection('posts')
+          .where('userId', '==', user.uid)
+          .get();
+
+        postDocs.forEach(async doc => {
+          await firestore().collection('posts').doc(doc.id).update({
+            avatarUrl: image,
+          });
+        });
+      })
+      .catch(err => {
+        console.log('Error update posts img', err);
+      });
+  }
+
   return (
     <>
       <Container>
         <Header hasLogOut={true} />
 
         {url ? (
-          <UploadButton activeOpacity={0.6}>
+          <UploadButton activeOpacity={0.6} onPress={() => uploadAvatar()}>
             <Avatar source={{ uri: url }} />
           </UploadButton>
         ) : (
-          <UploadButton activeOpacity={0.6}>
+          <UploadButton activeOpacity={0.6} onPress={() => uploadAvatar()}>
             <Avatar source={require('../../assets/avatar.png')} />
           </UploadButton>
         )}
