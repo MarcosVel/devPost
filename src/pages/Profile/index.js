@@ -1,6 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Keyboard,
@@ -32,6 +32,23 @@ const Profile = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [name, setName] = useState(user.name);
   const [loadingUpdate, setLoadingUpdate] = useState(false);
+
+  useEffect(() => {
+    async function loadAvatar() {
+      try {
+        let response = await storage()
+          .ref('users')
+          .child(user.uid)
+          .getDownloadURL();
+
+        setUrl(response);
+      } catch (err) {
+        console.log('Error loading user avatar', err);
+      }
+    }
+
+    loadAvatar();
+  }, []);
 
   async function updateUsername() {
     setLoadingUpdate(true);
@@ -103,7 +120,7 @@ const Profile = () => {
   async function uploadAvatarPosts() {
     const storageRef = storage().ref('users').child(user.uid);
 
-    const url = await storageRef
+    await storageRef
       .getDownloadURL()
       .then(async image => {
         // aupdate all img from user in posts
