@@ -34,20 +34,28 @@ const Profile = () => {
   const [loadingUpdate, setLoadingUpdate] = useState(false);
 
   useEffect(() => {
+    let isActive = true;
+
     async function loadAvatar() {
       try {
-        let response = await storage()
-          .ref('users')
-          .child(user.uid)
-          .getDownloadURL();
+        if (isActive) {
+          let response = await storage()
+            .ref('users')
+            .child(user.uid)
+            .getDownloadURL();
 
-        setUrl(response);
+          setUrl(response);
+        }
       } catch (err) {
         console.log('Error loading user avatar', err);
       }
     }
 
     loadAvatar();
+
+    return () => {
+      isActive = false;
+    };
   }, []);
 
   async function updateUsername() {
