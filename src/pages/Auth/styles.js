@@ -12,6 +12,7 @@ export const Title = styled.Text`
   font-size: 56px;
   font-weight: bold;
   font-style: italic;
+  margin-bottom: 16px;
 `;
 
 export const TITLE_RED = {
@@ -21,10 +22,23 @@ export const TITLE_RED = {
 export const Input = styled.TextInput`
   width: 80%;
   background-color: #fff;
-  margin-top: 8px;
   padding: 8px 16px;
   border-radius: 8px;
   font-size: 16px;
+`;
+
+export const PasswordInput = styled.View`
+  flex-direction: row;
+  margin-top: 8px;
+  width: 80%;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  border-radius: 8px;
+`;
+
+export const TogglePassword = styled.TouchableOpacity`
+  margin-right: 16px;
 `;
 
 export const Button = styled.TouchableOpacity`
