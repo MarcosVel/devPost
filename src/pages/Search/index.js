@@ -17,11 +17,8 @@ const Search = () => {
 
     const subscriber = firestore()
       .collection('users')
-      // .where('name', '>=', input)
-      // .where('name', '<=', input + '\uf8ff')
-      .orderBy('name', 'asc')
-      .startAt(input.toUpperCase())
-      .endAt(input.toLowerCase() + '\uf8ff')
+      .where('name', '>=', input)
+      .where('name', '<=', input + '\uf8ff')
       .onSnapshot(snapshot => {
         const listUsers = [];
 

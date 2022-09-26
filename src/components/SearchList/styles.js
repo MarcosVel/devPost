@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.TouchableOpacity`
-  margin-bottom: 24px;
+  padding: 20px 0;
 `;
 
 export const Name = styled.Text`

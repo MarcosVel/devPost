@@ -26,7 +26,7 @@ export const Input = styled.TextInput.attrs({
 
 export const List = styled.FlatList.attrs({
   showsVerticalScrollIndicator: false,
-  contentContainerStyle: { paddingTop: 24 },
+  contentContainerStyle: { paddingTop: 8 },
 })`
   flex: 1;
 `;
